@@ -2,11 +2,11 @@ import Parser from 'rss-parser';
 import { PlayerMove, Team, Player, MoveType } from '@/types/nba';
 
 interface RSSItem {
-  title: string;
-  content: string;
-  contentSnippet: string;
-  pubDate: string;
-  link: string;
+  title?: string;
+  content?: string;
+  contentSnippet?: string;
+  pubDate?: string;
+  link?: string;
   creator?: string;
 }
 
@@ -33,7 +33,7 @@ export class NBADataRetriever {
       confidence: 95
     },
     {
-      url: 'https://nitter.net/ChrisBHaynes/rss', 
+      url: 'https://nitter.net/ChrisBHaynes/rss',
       reporter: 'Chris Haynes',
       confidence: 90
     },
@@ -162,8 +162,8 @@ export class NBADataRetriever {
   }
 
   private parseRSSItem(item: RSSItem, source: { reporter: string; confidence: number }): PlayerMove | null {
-    const text = item.title + ' ' + (item.contentSnippet || '');
-    
+    const text = (item.title || '') + ' ' + (item.contentSnippet || '');
+
     for (const { pattern, type } of this.movePatterns) {
       const match = text.match(pattern);
       if (match) {
@@ -175,9 +175,9 @@ export class NBADataRetriever {
   }
 
   private createMoveFromMatch(
-    match: RegExpMatchArray, 
-    type: MoveType, 
-    item: RSSItem, 
+    match: RegExpMatchArray,
+    type: MoveType,
+    item: RSSItem,
     source: { reporter: string; confidence: number }
   ): PlayerMove {
     const playerName = this.cleanPlayerName(match[1]);
@@ -191,7 +191,7 @@ export class NBADataRetriever {
       move_type: type,
       date: new Date().toISOString().split('T')[0],
       timestamp: item.pubDate || new Date().toISOString(),
-      details: item.title,
+      details: item.title || 'NBA Moves',
       source: source.reporter,
       is_official: source.confidence >= 90,
       contract: undefined,
@@ -296,11 +296,11 @@ export class NBADataRetriever {
       // Note: This would need the actual Underdog NBA API endpoints
       // For now, we'll simulate the structure
       console.log('Fetching from Underdog NBA...');
-      
+
       // Placeholder for actual API call
       // const response = await fetch('https://api.underdognba.com/moves');
       // const data = await response.json();
-      
+
       return []; // Return actual parsed moves when API is available
     } catch (error) {
       console.error('Underdog NBA fetch failed:', error);
@@ -311,7 +311,7 @@ export class NBADataRetriever {
   // Main method to get all new moves
   async getLatestMoves(): Promise<PlayerMove[]> {
     console.log('🏀 Checking for new NBA moves...');
-    
+
     const [rssMoves, underdogMoves] = await Promise.all([
       this.fetchAllSources(),
       this.fetchUnderdogData()

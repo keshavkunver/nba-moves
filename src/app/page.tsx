@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect } from 'react';
 import { DashboardStats } from '@/components/DashboardStats';
 import { PlayerMoveCard } from '@/components/PlayerMoveCard';
@@ -8,13 +10,13 @@ import { Zap, BarChart3, Filter, Wifi, WifiOff, RefreshCw, Bell } from 'lucide-r
 import { useRealTimeNBA, requestNotificationPermission } from '@/hooks/useRealTimeNBA';
 
 export default function Home() {
-  const { 
-    moves, 
-    isConnected, 
-    lastUpdate, 
-    newMovesCount, 
-    requestRefresh, 
-    clearNewMovesCount 
+  const {
+    moves,
+    isConnected,
+    lastUpdate,
+    newMovesCount,
+    requestRefresh,
+    clearNewMovesCount
   } = useRealTimeNBA();
 
   // Request notification permission on load
@@ -27,7 +29,7 @@ export default function Home() {
     const handleUserInteraction = () => clearNewMovesCount();
     document.addEventListener('scroll', handleUserInteraction);
     document.addEventListener('click', handleUserInteraction);
-    
+
     return () => {
       document.removeEventListener('scroll', handleUserInteraction);
       document.removeEventListener('click', handleUserInteraction);
@@ -51,11 +53,10 @@ export default function Home() {
                 <Zap className="w-5 h-5 text-white" />
               </div>
               <h1 className="text-xl font-bold text-gray-900">NBA Moves</h1>
-              
+
               {/* Connection Status */}
-              <div className={`flex items-center gap-2 px-2 py-1 rounded-full text-xs ${
-                isConnected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-              }`}>
+              <div className={`flex items-center gap-2 px-2 py-1 rounded-full text-xs ${isConnected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
                 {isConnected ? (
                   <>
                     <Wifi className="w-3 h-3" />
@@ -77,7 +78,7 @@ export default function Home() {
                 </div>
               )}
             </div>
-            
+
             <div className="flex items-center gap-4">
               {/* Last Update Time */}
               {lastUpdate && (
@@ -85,8 +86,8 @@ export default function Home() {
                   Last update: {lastUpdate.toLocaleTimeString()}
                 </div>
               )}
-              
-              <button 
+
+              <button
                 onClick={requestRefresh}
                 className="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50"
                 disabled={!isConnected}
@@ -94,12 +95,12 @@ export default function Home() {
                 <RefreshCw className="w-4 h-4" />
                 Refresh
               </button>
-              
+
               <button className="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50">
                 <Filter className="w-4 h-4" />
                 Filters
               </button>
-              
+
               <button className="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50">
                 <BarChart3 className="w-4 h-4" />
                 Analytics
@@ -147,7 +148,7 @@ export default function Home() {
                     </p>
                   </div>
                 )}
-                
+
                 {moves.length === 0 && isConnected ? (
                   <div className="text-center py-8">
                     <div className="text-gray-400 mb-2">🏀</div>
@@ -185,32 +186,28 @@ export default function Home() {
                 <CardTitle className="text-lg">System Status</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className={`p-3 rounded-lg ${
-                  isConnected ? 'bg-green-50' : 'bg-red-50'
-                }`}>
-                  <div className={`text-sm font-medium ${
-                    isConnected ? 'text-green-900' : 'text-red-900'
+                <div className={`p-3 rounded-lg ${isConnected ? 'bg-green-50' : 'bg-red-50'
                   }`}>
+                  <div className={`text-sm font-medium ${isConnected ? 'text-green-900' : 'text-red-900'
+                    }`}>
                     Real-time Connection
                   </div>
-                  <div className={`text-lg font-bold ${
-                    isConnected ? 'text-green-700' : 'text-red-700'
-                  }`}>
+                  <div className={`text-lg font-bold ${isConnected ? 'text-green-700' : 'text-red-700'
+                    }`}>
                     {isConnected ? '🟢 Connected' : '🔴 Disconnected'}
                   </div>
-                  <div className={`text-xs ${
-                    isConnected ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <div className={`text-xs ${isConnected ? 'text-green-600' : 'text-red-600'
+                    }`}>
                     {isConnected ? 'Monitoring 5 NBA sources' : 'Attempting to reconnect...'}
                   </div>
                 </div>
-                
+
                 <div className="p-3 bg-blue-50 rounded-lg">
                   <div className="text-sm font-medium text-blue-900">Update Frequency</div>
                   <div className="text-lg font-bold text-blue-700">Every 30s</div>
                   <div className="text-xs text-blue-600">RSS + Underdog NBA</div>
                 </div>
-                
+
                 <div className="p-3 bg-purple-50 rounded-lg">
                   <div className="text-sm font-medium text-purple-900">Data Sources</div>
                   <div className="text-lg font-bold text-purple-700">5 Active</div>
@@ -230,13 +227,13 @@ export default function Home() {
                   <div className="text-lg font-bold text-blue-700">Western</div>
                   <div className="text-xs text-blue-600">65% of recent moves</div>
                 </div>
-                
+
                 <div className="p-3 bg-green-50 rounded-lg">
                   <div className="text-sm font-medium text-green-900">Response Time</div>
-                  <div className="text-lg font-bold text-green-700">< 2 min</div>
+                  <div className="text-lg font-bold text-green-700">&lt; 2 min</div>
                   <div className="text-xs text-green-600">From tweet to dashboard</div>
                 </div>
-                
+
                 <div className="p-3 bg-purple-50 rounded-lg">
                   <div className="text-sm font-medium text-purple-900">Trade Deadline</div>
                   <div className="text-lg font-bold text-purple-700">32 days</div>

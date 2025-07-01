@@ -18,10 +18,10 @@ export class RealTimeNBAServer {
         methods: ["GET", "POST"]
       }
     });
-    
+
     this.dataRetriever = new NBADataRetriever();
     this.setupSocketHandlers();
-    
+
     server.listen(port, () => {
       console.log(`🏀 NBA Moves Real-time Server running on port ${port}`);
     });
@@ -30,10 +30,10 @@ export class RealTimeNBAServer {
   private setupSocketHandlers() {
     this.io.on('connection', (socket) => {
       console.log('📱 Client connected:', socket.id);
-      
+
       // Send current moves to new client
       socket.emit('current-moves', this.currentMoves);
-      
+
       socket.on('disconnect', () => {
         console.log('📱 Client disconnected:', socket.id);
       });
@@ -80,16 +80,16 @@ export class RealTimeNBAServer {
   private async checkForNewMoves() {
     try {
       const newMoves = await this.dataRetriever.getLatestMoves();
-      
+
       if (newMoves.length > 0) {
         // Find truly new moves
-        const trulyNewMoves = newMoves.filter(move => 
+        const trulyNewMoves = newMoves.filter(move =>
           !this.currentMoves.some(existing => existing.id === move.id)
         );
 
         if (trulyNewMoves.length > 0) {
           console.log(`🚨 BREAKING: ${trulyNewMoves.length} new NBA moves detected!`);
-          
+
           // Add to current moves
           this.currentMoves = [...trulyNewMoves, ...this.currentMoves]
             .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
@@ -145,7 +145,7 @@ export function startNBAMovesServer(port: number = 8080): RealTimeNBAServer {
 // For standalone server script
 if (require.main === module) {
   const server = startNBAMovesServer(8080);
-  
+
   // Test injection after 5 seconds
   setTimeout(() => {
     const testMove: PlayerMove = {
@@ -179,7 +179,7 @@ if (require.main === module) {
       source: 'Test System',
       is_official: false
     };
-    
+
     server.injectTestMove(testMove);
   }, 5000);
 
