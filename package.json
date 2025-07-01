@@ -1,0 +1,45 @@
+{
+  "name": "nba-moves-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "realtime-server": "node -r ts-node/register src/lib/realtimeServer.ts",
+    "dev:full": "concurrently \"npm run dev\" \"npm run realtime-server\"",
+    "test-data": "node -e \"const { NBADataRetriever } = require('./src/lib/dataRetrieval'); const retriever = new NBADataRetriever(); retriever.getLatestMoves().then(moves => console.log('Found moves:', moves.length));\""
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "next": "15.1.6",
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.5",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "@tailwindcss/postcss": "0.0.0-insiders.66b33c4",
+    "tailwindcss": "^3.4.17",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "15.1.6",
+    "@eslint/eslintrc": "^3.2.0",
+    "lucide-react": "^0.468.0",
+    "date-fns": "^4.1.0",
+    "recharts": "^2.15.0",
+    "@tanstack/react-query": "^5.62.5",
+    "zustand": "^5.0.2",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1",
+    "rss-parser": "^3.13.0",
+    "cheerio": "^1.0.0",
+    "node-cron": "^3.0.3",
+    "ws": "^8.18.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "concurrently": "^9.1.0"
+  }
+}
